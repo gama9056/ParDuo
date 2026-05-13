@@ -8,7 +8,7 @@ import calendar
 SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 URL_FORM = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv"
 
-st.set_page_config(page_title="ParDuo", page_icon="💑", layout="wide")
+st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
 
 @st.cache_data(ttl=60)
 def cargar_datos():
@@ -50,7 +50,7 @@ def crear_calendario(año, mes, df):
     return html
 
 # Título
-st.markdown("<h1 style='text-align:center;'>💑 ParDuo - Finanzas Jackson & Yuly</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;'>😎 ParDuo - Finanzas Jackson & Yuly</h1>", unsafe_allow_html=True)
 
 df = cargar_datos()
 
