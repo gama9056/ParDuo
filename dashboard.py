@@ -31,10 +31,7 @@ def cargar_dashboard():
 
 # ========== TÍTULO ==========
 st.markdown("""
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 30px;">
-    <h1 style="color: white; margin: 0; text-align: center;">😎 ParDuo</h1>
-    <p style="color: white; margin: 10px 0 0 0; text-align: center;">Finanzas Jackson & Yuly</p>
+    <h1 style="color: black; margin: 0;">😎 ParDuo</h1>
 </div>
 """, unsafe_allow_html=True)
 
