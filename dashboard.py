@@ -31,7 +31,7 @@ def cargar_dashboard():
 
 # ========== TÍTULO ==========
 st.markdown("""
-    <h1 style="color: black; margin-top: -50px; text-align: center;">😎 ParDuo</h1>
+    <h1 style="color: black; margin-top: -70px; text-align: center;">😎 ParDuo</h1>
 """, unsafe_allow_html=True)
 
 # ========== CARGAR DATOS ==========
