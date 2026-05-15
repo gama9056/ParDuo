@@ -52,184 +52,96 @@ if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
 # ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data POR POSICIÓN==========
+# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data ==========
 if not df_dash.empty:
-    # Limpiar valor: quita "S/." y comas, convierte a número
-    def limpiar_valor(valor_str):
+    # Función para limpiar valores
+    def limpiar_valor(valor):
         try:
-            return float(str(valor_str).replace("S/.", "").replace(",", "").strip())
+            if pd.isna(valor):
+                return 0
+            valor_str = str(valor).replace("S/.", "").replace(",", "").strip()
+            return float(valor_str) if valor_str else 0
         except:
             return 0
     
-    # Extraer por posición (fila, columna) - columna C es índice 2
-    gastado_jackson = limpiar_valor(df_dash.iloc[7, 2])   # Fila 8, Columna C
-    gastado_yuly = limpiar_valor(df_dash.iloc[8, 2])      # Fila 9, Columna C
-    gastado_variables = limpiar_valor(df_dash.iloc[9, 2]) # Fila 10, Columna C
-    gastado_fijos = limpiar_valor(df_dash.iloc[10, 2])    # Fila 11, Columna C
+    # Mostrar la tabla completa de la hoja 3 (para ver qué hay)
+    st.subheader("📊 Datos de la hoja 3_Dashboard_Data")
+    st.dataframe(df_dash, use_container_width=True)
     
-    dinero_acumulado = limpiar_valor(df_dash.iloc[14, 2]) # Fila 15, Columna C
-    dinero_invertido = limpiar_valor(df_dash.iloc[15, 2]) # Fila 16, Columna C
-    presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 2]) # Fila 17, Columna C
-    presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 2])    # Fila 18, Columna C
-    gastos_variables_base = limpiar_valor(df_dash.iloc[18, 2])      # Fila 19, Columna C
-    gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 2])          # Fila 20, Columna C
+    # Extraer valores por posición (con verificación de límites)
+    num_filas = len(df_dash)
+    num_cols = len(df_dash.columns)
     
-    # También los saldos restantes (ya calculados en Sheets)
-    saldo_jackson = limpiar_valor(df_dash.iloc[23, 2])   # Fila 24, Columna C
-    saldo_yuly = limpiar_valor(df_dash.iloc[24, 2])      # Fila 25, Columna C
-    saldo_variables = limpiar_valor(df_dash.iloc[25, 2]) # Fila 26, Columna C
-    saldo_fijos = limpiar_valor(df_dash.iloc[26, 2])     # Fila 27, Columna C
-    total_disponible = limpiar_valor(df_dash.iloc[28, 2]) # Fila 29, Columna C
+    st.caption(f"La hoja tiene {num_filas} filas y {num_cols} columnas")
+    
+    # Solo extraer si hay suficientes filas
+    if num_filas > 7:
+        gastado_jackson = limpiar_valor(df_dash.iloc[7, 1] if num_cols > 1 else 0)
+        gastado_yuly = limpiar_valor(df_dash.iloc[8, 1] if num_cols > 1 else 0)
+        gastado_variables = limpiar_valor(df_dash.iloc[9, 1] if num_cols > 1 else 0)
+        gastado_fijos = limpiar_valor(df_dash.iloc[10, 1] if num_cols > 1 else 0)
+        dinero_acumulado = limpiar_valor(df_dash.iloc[14, 1] if num_cols > 1 else 0)
+        dinero_invertido = limpiar_valor(df_dash.iloc[15, 1] if num_cols > 1 else 0)
+        presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 1] if num_cols > 1 else 0)
+        presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 1] if num_cols > 1 else 0)
+        gastos_variables_base = limpiar_valor(df_dash.iloc[18, 1] if num_cols > 1 else 0)
+        gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 1] if num_cols > 1 else 0)
+    else:
+        st.warning("⚠️ No hay suficientes filas en la hoja 3_Dashboard_Data")
+        gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
+        dinero_acumulado = dinero_invertido = 12000
+        presupuesto_jackson_total = presupuesto_yuly_total = 300
+        gastos_variables_base = gastos_fijos_base = 0
 
 else:
-    # Valores por defecto
-    gastado_jackson = 152.50
-    gastado_yuly = 39.00
-    gastado_variables = 69.00
-    gastado_fijos = 51.00
-    dinero_acumulado = 12000.00
-    dinero_invertido = 80000.00
-    presupuesto_jackson_total = 300.00
-    presupuesto_yuly_total = 300.00
-    gastos_variables_base = 69.00
-    gastos_fijos_base = 2000.00
+    st.warning("⚠️ No hay datos en la hoja 3_Dashboard_Data")
+    gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
+    dinero_acumulado = dinero_invertido = 12000
+    presupuesto_jackson_total = presupuesto_yuly_total = 300
+    gastos_variables_base = gastos_fijos_base = 0
 
-# ========== CÁLCULOS ==========
-restante_jackson = presupuesto_jackson_total - gastado_jackson
-restante_yuly = presupuesto_yuly_total - gastado_yuly
-restante_variables = gastos_variables_base - gastado_variables if gastos_variables_base > 0 else dinero_acumulado - gastado_variables
-restante_fijos = gastos_fijos_base - gastado_fijos
+# ========== MOSTRAR VALORES EXTRAÍDOS ==========
+st.markdown("---")
+st.subheader("💰 Valores extraídos de Google Sheets")
 
-porcentaje_jackson = min(100, (gastado_jackson / presupuesto_jackson_total) * 100) if presupuesto_jackson_total > 0 else 0
-porcentaje_yuly = min(100, (gastado_yuly / presupuesto_yuly_total) * 100) if presupuesto_yuly_total > 0 else 0
-porcentaje_variables = min(100, (gastado_variables / gastos_variables_base) * 100) if gastos_variables_base > 0 else 0
-porcentaje_fijos = min(100, (gastado_fijos / gastos_fijos_base) * 100) if gastos_fijos_base > 0 else 0
-
-# ========== KPI CARDS ==========
-st.markdown("### 📊 Resumen General")
-col1, col2, col3, col4 = st.columns(4)
+col1, col2 = st.columns(2)
 
 with col1:
     st.metric("💰 Dinero Acumulado", f"S/.{dinero_acumulado:,.2f}")
-with col2:
     st.metric("📈 Dinero Invertido", f"S/.{dinero_invertido:,.2f}")
-with col3:
+    st.metric("🎯 Presupuesto Jackson", f"S/.{presupuesto_jackson_total:,.2f}")
+    st.metric("🎯 Presupuesto Yuly", f"S/.{presupuesto_yuly_total:,.2f}")
+
+with col2:
+    st.metric("👤 Gastado Jackson", f"S/.{gastado_jackson:,.2f}")
+    st.metric("👤 Gastado Yuly", f"S/.{gastado_yuly:,.2f}")
     st.metric("🛒 Gastos Variables", f"S/.{gastado_variables:,.2f}")
-with col4:
     st.metric("🏠 Gastos Fijos", f"S/.{gastado_fijos:,.2f}")
 
-st.markdown("---")
+# ========== CÁLCULOS Y PORCENTAJES ==========
+if presupuesto_jackson_total > 0:
+    porcentaje_jackson = (gastado_jackson / presupuesto_jackson_total) * 100
+    restante_jackson = presupuesto_jackson_total - gastado_jackson
+    st.caption(f"📊 Jackson: {porcentaje_jackson:.1f}% usado - Restante: S/.{restante_jackson:.2f}")
 
-# ========== PRESUPUESTOS PERSONALES ==========
-st.markdown("### 🎯 Presupuesto Personal (S/.300 c/u)")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown(f"**Jackson**")
-    st.markdown(f"<h3 style='margin:0'>S/.{gastado_jackson:,.2f} <span style='font-size:16px; color:gray'>/ S/.{presupuesto_jackson_total:,.2f}</span></h3>", unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div style="background-color: #e0e0e0; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0;">
-        <div style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); 
-                    width: {porcentaje_jackson}%; 
-                    border-radius: 10px; 
-                    height: 25px; 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: flex-end;
-                    padding-right: 8px;
-                    color: white;
-                    font-size: 12px;">
-            {porcentaje_jackson:.1f}%
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.caption(f"💰 Restante: S/.{restante_jackson:,.2f}")
-
-with col2:
-    st.markdown(f"**Yuly**")
-    st.markdown(f"<h3 style='margin:0'>S/.{gastado_yuly:,.2f} <span style='font-size:16px; color:gray'>/ S/.{presupuesto_yuly_total:,.2f}</span></h3>", unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div style="background-color: #e0e0e0; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0;">
-        <div style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); 
-                    width: {porcentaje_yuly}%; 
-                    border-radius: 10px; 
-                    height: 25px; 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: flex-end;
-                    padding-right: 8px;
-                    color: white;
-                    font-size: 12px;">
-            {porcentaje_yuly:.1f}%
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.caption(f"💰 Restante: S/.{restante_yuly:,.2f}")
-
-st.markdown("---")
-
-# ========== GASTOS VARIABLES Y FIJOS ==========
-st.markdown("### 🏠 Gastos del Hogar")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown(f"**📂 Gastos Variables Jackson**")
-    base_text = f"/ S/.{gastos_variables_base:,.2f}" if gastos_variables_base > 0 else ""
-    st.markdown(f"<h3 style='margin:0'>S/.{gastado_variables:,.2f} <span style='font-size:16px; color:gray'>{base_text}</span></h3>", unsafe_allow_html=True)
-    
-    if gastos_variables_base > 0:
-        st.markdown(f"""
-        <div style="background-color: #e0e0e0; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0;">
-            <div style="background: linear-gradient(90deg, #4ECDC4 0%, #44b3b0 100%); 
-                        width: {porcentaje_variables}%; 
-                        border-radius: 10px; 
-                        height: 25px; 
-                        display: flex; 
-                        align-items: center; 
-                        justify-content: flex-end;
-                        padding-right: 8px;
-                        color: white;
-                        font-size: 12px;">
-                {porcentaje_variables:.1f}%
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    st.caption(f"💰 Restante: S/.{restante_variables:,.2f}")
-
-with col2:
-    st.markdown(f"**📂 Gastos Fijos Yuly**")
-    st.markdown(f"<h3 style='margin:0'>S/.{gastado_fijos:,.2f} <span style='font-size:16px; color:gray'>/ S/.{gastos_fijos_base:,.2f}</span></h3>", unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div style="background-color: #e0e0e0; border-radius: 10px; height: 25px; width: 100%; margin: 10px 0;">
-        <div style="background: linear-gradient(90deg, #FF6B6B 0%, #e55555 100%); 
-                    width: {porcentaje_fijos}%; 
-                    border-radius: 10px; 
-                    height: 25px; 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: flex-end;
-                    padding-right: 8px;
-                    color: white;
-                    font-size: 12px;">
-            {porcentaje_fijos:.1f}%
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.caption(f"💰 Restante: S/.{restante_fijos:,.2f}")
-
-st.markdown("---")
+if presupuesto_yuly_total > 0:
+    porcentaje_yuly = (gastado_yuly / presupuesto_yuly_total) * 100
+    restante_yuly = presupuesto_yuly_total - gastado_yuly
+    st.caption(f"📊 Yuly: {porcentaje_yuly:.1f}% usado - Restante: S/.{restante_yuly:.2f}")
 
 # ========== TABLA DE ÚLTIMOS MOVIMIENTOS ==========
+st.markdown("---")
 st.markdown("### 📝 Últimos movimientos")
 
 if not df_raw.empty:
+    # Mostrar la tabla completa para ver las columnas disponibles
+    st.subheader("🔍 Vista previa de la hoja 1_Formulario_RAW")
+    st.dataframe(df_raw.head(10), use_container_width=True)
+    
+    # Mostrar nombres de columnas
+    st.caption(f"Columnas disponibles: {list(df_raw.columns)}")
+    
+    # Intentar identificar columnas comunes
     cols_disponibles = df_raw.columns.tolist()
     
     col_fecha = None
@@ -239,18 +151,19 @@ if not df_raw.empty:
     
     for col in cols_disponibles:
         col_lower = col.lower()
-        if 'fecha' in col_lower:
+        if 'fecha' in col_lower or 'fecha' in col_lower:
             col_fecha = col
-        elif 'responsable' in col_lower or 'persona' in col_lower:
+        elif 'responsable' in col_lower or 'persona' in col_lower or 'responsable' in col_lower:
             col_responsable = col
-        elif 'monto' in col_lower or 'soles' in col_lower:
+        elif 'monto' in col_lower or 'soles' in col_lower or 'monto' in col_lower:
             col_monto = col
-        elif 'fondo' in col_lower or 'origen' in col_lower:
+        elif 'fondo' in col_lower or 'origen' in col_lower or 'fondo' in col_lower:
             col_fondo = col
     
     columnas_mostrar = [c for c in [col_fecha, col_responsable, col_monto, col_fondo] if c]
     
     if columnas_mostrar:
+        st.subheader("📋 Últimos 10 movimientos")
         df_ultimos = df_raw[columnas_mostrar].copy()
         nombres = ['📅 Fecha', '👤 Responsable', '💵 Monto', '🏦 Fondo']
         df_ultimos.columns = nombres[:len(columnas_mostrar)]
@@ -263,4 +176,3 @@ else:
 
 st.markdown("---")
 st.caption("🔄 Datos actualizados cada 60 segundos | 📱 Registra gastos en el formulario ParDuo")
-
