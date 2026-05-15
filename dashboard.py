@@ -46,7 +46,7 @@ if df_dash.empty:
 # ========== EXTRAER VALORES DE 3_Dashboard_Data POR POSICIÓN ==========
 # Según tu archivo Excel, estas son las posiciones exactas (fila, columna)
 # Nota: pandas usa índice 0, por lo que la fila 1 es índice 0
-
+###
 if not df_dash.empty:
     # Asegurar que tenemos al menos 21 filas
     num_filas = len(df_dash)
@@ -111,7 +111,7 @@ else:
     presupuesto_yuly_total = 300
     gastos_variables_base = 0
     gastos_fijos_base = 2000
-
+###
 # ========== CÁLCULOS ==========
 restante_jackson = presupuesto_jackson_total - gastado_jackson
 restante_yuly = presupuesto_yuly_total - gastado_yuly
