@@ -52,14 +52,16 @@ if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
 # ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data POR POSICIÓN==========
-# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data ==========
 if not df_dash.empty:
     # Función para limpiar valores
     def limpiar_valor(valor):
         try:
             if pd.isna(valor):
                 return 0
-            valor_str = str(valor).replace("S/.", "").replace(",", "").strip()
+            valor_str = str(valor)          # 1. Convertir a texto
+           .replace("S/.", "")              # 2. Quitar "S/."
+           .replace(",", "")                # 3. Quitar comas
+           .strip()                         # 4. Quitar espacios
             return float(valor_str) if valor_str else 0
         except:
             return 0
