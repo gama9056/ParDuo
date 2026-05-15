@@ -33,7 +33,7 @@ def cargar_dashboard():
 st.markdown("""
 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
             padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 30px;">
-    <h1 style="color: white; margin: 0;">😎 ParDuo_Sex</h1>
+    <h1 style="color: white; margin: 0;">😎 ParDuo</h1>
     <p style="color: white; margin: 10px 0 0 0;">Finanzas Jackson & Yuly</p>
 </div>
 """, unsafe_allow_html=True)
