@@ -36,7 +36,7 @@ st.markdown("""
                text-align: center; 
                font-size: 30px; 
                font-family: 'Segoe UI'; 
-               text-shadow: 3px 3px 5px rgba(0,0,0,0.8); 
+               text-shadow: 0px 0px 5px rgba(0,150,255,0.5); 
                letter-spacing: 1px">
         😎 ParDuo
     </h1>
