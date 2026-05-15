@@ -64,17 +64,10 @@ if not df_dash.empty:
         except:
             return 0
     
-    # Mostrar la tabla completa de la hoja 3 (para ver qué hay)
-    st.subheader("📊 Datos de la hoja 3_Dashboard_Data")
-    st.dataframe(df_dash, use_container_width=True)
-    
-    # Extraer valores por posición (con verificación de límites)
+    # Extraer valores por posición
     num_filas = len(df_dash)
     num_cols = len(df_dash.columns)
     
-    st.caption(f"La hoja tiene {num_filas} filas y {num_cols} columnas")
-    
-    # Solo extraer si hay suficientes filas
     if num_filas > 7:
         gastado_jackson = limpiar_valor(df_dash.iloc[7, 1] if num_cols > 1 else 0)
         gastado_yuly = limpiar_valor(df_dash.iloc[8, 1] if num_cols > 1 else 0)
@@ -87,20 +80,18 @@ if not df_dash.empty:
         gastos_variables_base = limpiar_valor(df_dash.iloc[18, 1] if num_cols > 1 else 0)
         gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 1] if num_cols > 1 else 0)
     else:
-        st.warning("⚠️ No hay suficientes filas en la hoja 3_Dashboard_Data")
         gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
         dinero_acumulado = dinero_invertido = 12000
         presupuesto_jackson_total = presupuesto_yuly_total = 300
         gastos_variables_base = gastos_fijos_base = 0
 
 else:
-    st.warning("⚠️ No hay datos en la hoja 3_Dashboard_Data")
     gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
     dinero_acumulado = dinero_invertido = 12000
     presupuesto_jackson_total = presupuesto_yuly_total = 300
     gastos_variables_base = gastos_fijos_base = 0
 
-# ========== MOSTRAR VALORES EXTRAÍDOS ==========
+# ========== 💰 VALORES EXTRAÍDOS (AL PRINCIPIO) ==========
 st.markdown("---")
 st.subheader("💰 Valores extraídos de Google Sheets")
 
@@ -118,7 +109,7 @@ with col2:
     st.metric("🛒 Gastos Variables", f"S/.{gastado_variables:,.2f}")
     st.metric("🏠 Gastos Fijos", f"S/.{gastado_fijos:,.2f}")
 
-# ========== CÁLCULOS Y PORCENTAJES ==========
+# ========== PORCENTAJES ==========
 if presupuesto_jackson_total > 0:
     porcentaje_jackson = (gastado_jackson / presupuesto_jackson_total) * 100
     restante_jackson = presupuesto_jackson_total - gastado_jackson
@@ -129,19 +120,12 @@ if presupuesto_yuly_total > 0:
     restante_yuly = presupuesto_yuly_total - gastado_yuly
     st.caption(f"📊 Yuly: {porcentaje_yuly:.1f}% usado - Restante: S/.{restante_yuly:.2f}")
 
-# ========== TABLA DE ÚLTIMOS MOVIMIENTOS ==========
 st.markdown("---")
+
+# ========== TABLA DE ÚLTIMOS MOVIMIENTOS ==========
 st.markdown("### 📝 Últimos movimientos")
 
 if not df_raw.empty:
-    # Mostrar la tabla completa para ver las columnas disponibles
-    st.subheader("🔍 Vista previa de la hoja 1_Formulario_RAW")
-    st.dataframe(df_raw.head(10), use_container_width=True)
-    
-    # Mostrar nombres de columnas
-    st.caption(f"Columnas disponibles: {list(df_raw.columns)}")
-    
-    # Intentar identificar columnas comunes
     cols_disponibles = df_raw.columns.tolist()
     
     col_fecha = None
@@ -151,19 +135,18 @@ if not df_raw.empty:
     
     for col in cols_disponibles:
         col_lower = col.lower()
-        if 'fecha' in col_lower or 'fecha' in col_lower:
+        if 'fecha' in col_lower:
             col_fecha = col
-        elif 'responsable' in col_lower or 'persona' in col_lower or 'responsable' in col_lower:
+        elif 'responsable' in col_lower or 'persona' in col_lower:
             col_responsable = col
-        elif 'monto' in col_lower or 'soles' in col_lower or 'monto' in col_lower:
+        elif 'monto' in col_lower or 'soles' in col_lower:
             col_monto = col
-        elif 'fondo' in col_lower or 'origen' in col_lower or 'fondo' in col_lower:
+        elif 'fondo' in col_lower or 'origen' in col_lower:
             col_fondo = col
     
     columnas_mostrar = [c for c in [col_fecha, col_responsable, col_monto, col_fondo] if c]
     
     if columnas_mostrar:
-        st.subheader("📋 Últimos 10 movimientos")
         df_ultimos = df_raw[columnas_mostrar].copy()
         nombres = ['📅 Fecha', '👤 Responsable', '💵 Monto', '🏦 Fondo']
         df_ultimos.columns = nombres[:len(columnas_mostrar)]
