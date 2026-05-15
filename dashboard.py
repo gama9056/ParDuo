@@ -58,58 +58,113 @@ if not df_dash.empty:
         try:
             if pd.isna(valor):
                 return 0
-            valor_str = str(valor)          # 1. Convertir a texto
-           .replace("S/.", "")              # 2. Quitar "S/."
-           .replace(",", "")                # 3. Quitar comas
-           .strip()                         # 4. Quitar espacios
+            valor_str = str(valor).replace("S/.", "").replace(",", "").strip()
             return float(valor_str) if valor_str else 0
         except:
             return 0
     
-    # Extraer valores por posición
     num_filas = len(df_dash)
     num_cols = len(df_dash.columns)
     
-    if num_filas > 7:
-        gastado_jackson = limpiar_valor(df_dash.iloc[7, 1] if num_cols > 1 else 0)
-        gastado_yuly = limpiar_valor(df_dash.iloc[8, 1] if num_cols > 1 else 0)
-        gastado_variables = limpiar_valor(df_dash.iloc[9, 1] if num_cols > 1 else 0)
-        gastado_fijos = limpiar_valor(df_dash.iloc[10, 1] if num_cols > 1 else 0)
-        dinero_acumulado = limpiar_valor(df_dash.iloc[14, 1] if num_cols > 1 else 0)
-        dinero_invertido = limpiar_valor(df_dash.iloc[15, 1] if num_cols > 1 else 0)
-        presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 1] if num_cols > 1 else 0)
-        presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 1] if num_cols > 1 else 0)
-        gastos_variables_base = limpiar_valor(df_dash.iloc[18, 1] if num_cols > 1 else 0)
-        gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 1] if num_cols > 1 else 0)
+    # Verificar que haya suficientes filas
+    if num_filas > 28:  # Necesitas al menos 29 filas (0 a 28)
+        
+        # FILAS 5 a 12 (índices 4 a 11)
+        ingreso_total = limpiar_valor(df_dash.iloc[4, 1] if num_cols > 1 else 0)      # Fila 5
+        gastado_jackson = limpiar_valor(df_dash.iloc[7, 1] if num_cols > 1 else 0)     # Fila 8
+        gastado_yuly = limpiar_valor(df_dash.iloc[8, 1] if num_cols > 1 else 0)        # Fila 9
+        gastado_variables = limpiar_valor(df_dash.iloc[9, 1] if num_cols > 1 else 0)   # Fila 10
+        gastado_fijos = limpiar_valor(df_dash.iloc[10, 1] if num_cols > 1 else 0)      # Fila 11
+        gastos_total = limpiar_valor(df_dash.iloc[11, 1] if num_cols > 1 else 0)       # Fila 12
+        
+        # FILAS 15 a 20 (índices 14 a 19)
+        dinero_acumulado = limpiar_valor(df_dash.iloc[14, 1] if num_cols > 1 else 0)   # Fila 15
+        dinero_invertido = limpiar_valor(df_dash.iloc[15, 1] if num_cols > 1 else 0)   # Fila 16
+        presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 1] if num_cols > 1 else 0)  # Fila 17
+        presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 1] if num_cols > 1 else 0)     # Fila 18
+        gastos_variables_base = limpiar_valor(df_dash.iloc[18, 1] if num_cols > 1 else 0)      # Fila 19
+        gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 1] if num_cols > 1 else 0)          # Fila 20
+        
+        # FILAS 24 a 27 (índices 23 a 26)
+        saldo_jackson = limpiar_valor(df_dash.iloc[23, 1] if num_cols > 1 else 0)       # Fila 24
+        saldo_yuly = limpiar_valor(df_dash.iloc[24, 1] if num_cols > 1 else 0)          # Fila 25
+        saldo_variables = limpiar_valor(df_dash.iloc[25, 1] if num_cols > 1 else 0)     # Fila 26
+        saldo_fijos = limpiar_valor(df_dash.iloc[26, 1] if num_cols > 1 else 0)         # Fila 27
+        
+        # FILA 29 (índice 28)
+        total_disponible = limpiar_valor(df_dash.iloc[28, 1] if num_cols > 1 else 0)    # Fila 29
+        
     else:
-        gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
-        dinero_acumulado = dinero_invertido = 12000
+        # Valores por defecto si no hay suficientes filas
+        ingreso_total = gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
+        gastos_total = 0
+        dinero_acumulado = 12000
+        dinero_invertido = 80000
         presupuesto_jackson_total = presupuesto_yuly_total = 300
         gastos_variables_base = gastos_fijos_base = 0
+        saldo_jackson = saldo_yuly = saldo_variables = saldo_fijos = 0
+        total_disponible = 0
 
 else:
-    gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
-    dinero_acumulado = dinero_invertido = 12000
+    # Valores por defecto si no hay datos
+    ingreso_total = gastado_jackson = gastado_yuly = gastado_variables = gastado_fijos = 0
+    gastos_total = 0
+    dinero_acumulado = 12000
+    dinero_invertido = 80000
     presupuesto_jackson_total = presupuesto_yuly_total = 300
     gastos_variables_base = gastos_fijos_base = 0
+    saldo_jackson = saldo_yuly = saldo_variables = saldo_fijos = 0
+    total_disponible = 0
 
-# ========== 💰 VALORES EXTRAÍDOS (AL PRINCIPIO) ==========
+# ========== MOSTRAR VALORES EXTRAÍDOS ==========
 st.markdown("---")
 st.subheader("💰 Valores extraídos de Google Sheets")
 
-col1, col2 = st.columns(2)
-
+# Primera fila de métricas
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("💰 Dinero Acumulado", f"S/.{dinero_acumulado:,.2f}")
+with col2:
     st.metric("📈 Dinero Invertido", f"S/.{dinero_invertido:,.2f}")
+with col3:
+    st.metric("📊 Ingreso Total", f"S/.{ingreso_total:,.2f}")
+with col4:
+    st.metric("📉 Gastos Total", f"S/.{gastos_total:,.2f}")
+
+# Segunda fila - Gastos por categoría
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric("👤 Gastado Jackson", f"S/.{gastado_jackson:,.2f}")
+with col2:
+    st.metric("👤 Gastado Yuly", f"S/.{gastado_yuly:,.2f}")
+with col3:
+    st.metric("🛒 Gastos Variables", f"S/.{gastado_variables:,.2f}")
+with col4:
+    st.metric("🏠 Gastos Fijos", f"S/.{gastado_fijos:,.2f}")
+
+# Tercera fila - Saldos restantes
+st.markdown("### 📊 Saldos Restantes")
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.metric("✅ Saldo Jackson", f"S/.{saldo_jackson:,.2f}")
+with col2:
+    st.metric("✅ Saldo Yuly", f"S/.{saldo_yuly:,.2f}")
+with col3:
+    st.metric("✅ Saldo Variables", f"S/.{saldo_variables:,.2f}")
+with col4:
+    st.metric("✅ Saldo Fijos", f"S/.{saldo_fijos:,.2f}")
+
+# Cuarta fila - Totales
+st.markdown("### 🎯 Totales")
+col1, col2 = st.columns(2)
+with col1:
     st.metric("🎯 Presupuesto Jackson", f"S/.{presupuesto_jackson_total:,.2f}")
     st.metric("🎯 Presupuesto Yuly", f"S/.{presupuesto_yuly_total:,.2f}")
-
 with col2:
-    st.metric("👤 Gastado Jackson", f"S/.{gastado_jackson:,.2f}")
-    st.metric("👤 Gastado Yuly", f"S/.{gastado_yuly:,.2f}")
-    st.metric("🛒 Gastos Variables", f"S/.{gastado_variables:,.2f}")
-    st.metric("🏠 Gastos Fijos", f"S/.{gastado_fijos:,.2f}")
+    st.metric("🏦 Total Disponible", f"S/.{total_disponible:,.2f}")
+    st.metric("📊 Base Gastos Fijos", f"S/.{gastos_fijos_base:,.2f}")
+
+st.markdown("---")
 
 # ========== PORCENTAJES ==========
 if presupuesto_jackson_total > 0:
