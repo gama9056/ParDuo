@@ -9,7 +9,7 @@ SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
 URL_DASH = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=3_Dashboard_Data"
 
-st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
+st.set_page_config(page_title="ParDuo", page_icon="😎", layout="centered")
 
 @st.cache_data(ttl=60)
 def cargar_formulario():
