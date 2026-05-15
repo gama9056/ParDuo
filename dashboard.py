@@ -31,8 +31,15 @@ def cargar_dashboard():
 
 # ========== TÍTULO ==========
 st.markdown("""
-    <h1 style="color: black; margin-top: -65px; text-align: center; font-size: 30px; 
-    font-family: 'Segoe UI'; text-shadow: 3px 3px 5px rgba(0,0,0,0.8); letter-spacing: 1px">😎 ParDuo</h1>
+    <h1 style="color: black; 
+               margin-top: -65px; 
+               text-align: center; 
+               font-size: 30px; 
+               font-family: 'Segoe UI'; 
+               text-shadow: 3px 3px 5px rgba(0,0,0,0.8); 
+               letter-spacing: 1px">
+        😎 ParDuo
+    </h1>
 """, unsafe_allow_html=True)
 
 # ========== CARGAR DATOS ==========
