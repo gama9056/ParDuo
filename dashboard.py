@@ -23,7 +23,7 @@ def cargar_formulario():
 @st.cache_data(ttl=60)
 def cargar_dashboard():
     try:
-        df = pd.read_csv(URL_HOLA_3)
+        df = pd.read_csv(URL_HOJA_3)
         return df
     except Exception as e:
         st.error(f"Error cargando dashboard: {e}")
