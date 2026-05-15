@@ -46,72 +46,72 @@ if df_dash.empty:
 # ========== EXTRAER VALORES DE 3_Dashboard_Data POR POSICIÓN ==========
 # Según tu archivo Excel, estas son las posiciones exactas (fila, columna)
 # Nota: pandas usa índice 0, por lo que la fila 1 es índice 0
-###
-if not df_dash.empty:
-    # Asegurar que tenemos al menos 21 filas
-    num_filas = len(df_dash)
+
+# if not df_dash.empty:
+#     # Asegurar que tenemos al menos 21 filas
+#     num_filas = len(df_dash)
     
-    # Extraer por nombre de la primera columna (más confiable que posición)
-    datos_dict = {}
-    for idx, row in df_dash.iterrows():
-        nombre = str(row.iloc[0]) if pd.notna(row.iloc[0]) else ""
-        valor = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else 0
-        if nombre and nombre != "nan":
-            datos_dict[nombre] = valor
+#     # Extraer por nombre de la primera columna (más confiable que posición)
+#     datos_dict = {}
+#     for idx, row in df_dash.iterrows():
+#         nombre = str(row.iloc[0]) if pd.notna(row.iloc[0]) else ""
+#         valor = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else 0
+#         if nombre and nombre != "nan":
+#             datos_dict[nombre] = valor
     
-    # También extraer por posición (fallback)
-    try:
-        # C8 (fila 8) - Gasto personal Jackson gastado
-        gastado_jackson = float(df_dash.iloc[7, 1]) if num_filas > 7 else 0
-        # C9 (fila 9) - Gasto personal Yuly gastado  
-        gastado_yuly = float(df_dash.iloc[8, 1]) if num_filas > 8 else 0
-        # C11 (fila 11) - Gastos Fijos Yuly gastado
-        gastado_fijos = float(df_dash.iloc[10, 1]) if num_filas > 10 else 0
-        # C15 (fila 15) - Dinero Acumulado
-        dinero_acumulado = float(df_dash.iloc[14, 1]) if num_filas > 14 else 11000
-        # C16 (fila 16) - Dinero invertido
-        dinero_invertido = float(df_dash.iloc[15, 1]) if num_filas > 15 else 80000
-        # C17 (fila 17) - Presupuesto Jackson
-        presupuesto_jackson_total = float(df_dash.iloc[16, 1]) if num_filas > 16 else 300
-        # C18 (fila 18) - Presupuesto Yuly
-        presupuesto_yuly_total = float(df_dash.iloc[17, 1]) if num_filas > 17 else 300
-        # C19 (fila 19) - Gastos Variables – Jackson (presupuesto/base)
-        gastos_variables_base = float(df_dash.iloc[18, 1]) if num_filas > 18 else 0
-        # C20 (fila 20) - Gastos Fijos – Yuly (presupuesto/base)
-        gastos_fijos_base = float(df_dash.iloc[19, 1]) if num_filas > 19 else 2000
-    except Exception as e:
-        st.error(f"Error extrayendo valores por posición: {e}")
-        gastado_jackson = 152.50
-        gastado_yuly = 39.00
-        gastado_fijos = 0
-        dinero_acumulado = 11000
-        dinero_invertido = 80000
-        presupuesto_jackson_total = 300
-        presupuesto_yuly_total = 300
-        gastos_variables_base = 0
-        gastos_fijos_base = 2000
+#     # También extraer por posición (fallback)
+#     try:
+#         # C8 (fila 8) - Gasto personal Jackson gastado
+#         gastado_jackson = float(df_dash.iloc[7, 1]) if num_filas > 7 else 0
+#         # C9 (fila 9) - Gasto personal Yuly gastado  
+#         gastado_yuly = float(df_dash.iloc[8, 1]) if num_filas > 8 else 0
+#         # C11 (fila 11) - Gastos Fijos Yuly gastado
+#         gastado_fijos = float(df_dash.iloc[10, 1]) if num_filas > 10 else 0
+#         # C15 (fila 15) - Dinero Acumulado
+#         dinero_acumulado = float(df_dash.iloc[14, 1]) if num_filas > 14 else 11000
+#         # C16 (fila 16) - Dinero invertido
+#         dinero_invertido = float(df_dash.iloc[15, 1]) if num_filas > 15 else 80000
+#         # C17 (fila 17) - Presupuesto Jackson
+#         presupuesto_jackson_total = float(df_dash.iloc[16, 1]) if num_filas > 16 else 300
+#         # C18 (fila 18) - Presupuesto Yuly
+#         presupuesto_yuly_total = float(df_dash.iloc[17, 1]) if num_filas > 17 else 300
+#         # C19 (fila 19) - Gastos Variables – Jackson (presupuesto/base)
+#         gastos_variables_base = float(df_dash.iloc[18, 1]) if num_filas > 18 else 0
+#         # C20 (fila 20) - Gastos Fijos – Yuly (presupuesto/base)
+#         gastos_fijos_base = float(df_dash.iloc[19, 1]) if num_filas > 19 else 2000
+#     except Exception as e:
+#         st.error(f"Error extrayendo valores por posición: {e}")
+#         gastado_jackson = 152.50
+#         gastado_yuly = 39.00
+#         gastado_fijos = 0
+#         dinero_acumulado = 11000
+#         dinero_invertido = 80000
+#         presupuesto_jackson_total = 300
+#         presupuesto_yuly_total = 300
+#         gastos_variables_base = 0
+#         gastos_fijos_base = 2000
     
-    # También extraer por diccionario (más robusto)
-    gastado_variables = float(datos_dict.get('📂 Gastos Variables Jackson', 0))
-    if gastado_variables == 0:
-        gastado_variables = float(datos_dict.get('Gastos Variables – Jackson', 0))
+#     # También extraer por diccionario (más robusto)
+#     gastado_variables = float(datos_dict.get('📂 Gastos Variables Jackson', 0))
+#     if gastado_variables == 0:
+#         gastado_variables = float(datos_dict.get('Gastos Variables – Jackson', 0))
     
-    gastado_fijos_dict = float(datos_dict.get('📂 Gastos Fijos Yuly', 0))
-    if gastado_fijos_dict > 0:
-        gastado_fijos = gastado_fijos_dict
-else:
-    # Valores por defecto si no hay datos
-    gastado_jackson = 152.50
-    gastado_yuly = 39.00
-    gastado_fijos = 0
-    gastado_variables = 0
-    dinero_acumulado = 11000
-    dinero_invertido = 80000
-    presupuesto_jackson_total = 300
-    presupuesto_yuly_total = 300
-    gastos_variables_base = 0
-    gastos_fijos_base = 2000
-###
+#     gastado_fijos_dict = float(datos_dict.get('📂 Gastos Fijos Yuly', 0))
+#     if gastado_fijos_dict > 0:
+#         gastado_fijos = gastado_fijos_dict
+# else:
+#     # Valores por defecto si no hay datos
+#     gastado_jackson = 152.50
+#     gastado_yuly = 39.00
+#     gastado_fijos = 0
+#     gastado_variables = 0
+#     dinero_acumulado = 11000
+#     dinero_invertido = 80000
+#     presupuesto_jackson_total = 300
+#     presupuesto_yuly_total = 300
+#     gastos_variables_base = 0
+#     gastos_fijos_base = 2000
+
 # ========== CÁLCULOS ==========
 restante_jackson = presupuesto_jackson_total - gastado_jackson
 restante_yuly = presupuesto_yuly_total - gastado_yuly
