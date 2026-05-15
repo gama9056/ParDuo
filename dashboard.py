@@ -123,82 +123,74 @@ else:
     ahorro_mutuo = 0
 
 
-# ========== DISEÑO DE CUADRÍCULA SIMÉTRICA ==========
-# CSS personalizado para bordes y líneas
+# ========== DISEÑO DE CUADRÍCULA SIMÉTRICA (ESQUELETO VACÍO) ==========
 st.markdown("""
 <style>
+    /* Borde exterior principal */
     .main-border {
         border: 2px solid #333333;
         border-radius: 10px;
-        padding: 10px;
+        padding: 20px;
         margin-bottom: 20px;
+        background-color: #f9f9f9;
     }
-    .vertical-line {
-        border-left: 1px solid #cccccc;
-        border-right: 1px solid #cccccc;
+    
+    /* Centrar contenido */
+    .center-content {
+        text-align: center;
+        padding: 20px;
     }
-    .horizontal-line {
-        border-top: 1px solid #cccccc;
-        margin: 10px 0;
-    }
-    .row-fixed {
-        min-height: 150px;
+    
+    /* Columna vacía con fondo gris claro */
+    .empty-col {
+        background-color: #f0f0f0;
+        min-height: 400px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
-    }
-    .empty-col {
-        min-height: 300px;
+        color: #999;
+        font-size: 14px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Contenedor principal con borde exterior
-with st.container():
-    st.markdown('<div class="main-border">', unsafe_allow_html=True)
+# Contenedor principal
+st.markdown('<div class="main-border">', unsafe_allow_html=True)
+
+# Título dentro del borde
+st.markdown('<h3 style="text-align: center;">📊 DASHBOARD PARDUO</h3>', unsafe_allow_html=True)
+st.markdown('---')
+
+# Primera fila de columnas (25% - 50% - 25%)
+col_left, col_center, col_right = st.columns([1, 2, 1])
+
+# COLUMNA IZQUIERDA (25%) - VACÍA
+with col_left:
+    st.markdown('<div class="empty-col">⬅️ ESPACIO<br>DECORATIVO</div>', unsafe_allow_html=True)
+
+# COLUMNA CENTRAL (50%) - ESTRUCTURA VACÍA
+with col_center:
+    st.markdown('<div class="center-content">', unsafe_allow_html=True)
     
-    # Primera fila de columnas (izquierda, centro, derecha)
-    col_left, col_center, col_right = st.columns([1, 2, 1])
+    # FILA 1
+    st.markdown("### 🟢 FILA 1")
+    # Aquí irán las métricas después
     
-    # COLUMNA 1 (izquierda - 25%) - VACÍA
-    with col_left:
-        st.markdown('<div class="empty-col"></div>', unsafe_allow_html=True)
+    # LÍNEA HORIZONTAL DIVISORIA
+    st.markdown('<hr style="margin: 20px 0;">', unsafe_allow_html=True)
     
-    # COLUMNA CENTRAL (50%) - Contiene tus métricas
-    with col_center:
-        # Fila 1
-        st.markdown('<div class="row-fixed">', unsafe_allow_html=True)
-        # Aquí puedes poner tus métricas principales
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.metric("🤝 DINERO MUTUO", f"S/.{dinero_mutuo:,.2f}")
-            st.metric("💰 DINERO INVERTIDO", f"S/.{dinero_invertido:,.2f}")
-        with col_b:
-            st.metric("📊 INGRESO TOTAL", f"S/.{ingreso_total:,.2f}")
-            st.metric("📉 GASTO TOTAL", f"S/.{gasto_total:,.2f}")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Línea horizontal divisoria
-        st.markdown('<div class="horizontal-line"></div>', unsafe_allow_html=True)
-        
-        # Fila 2
-        st.markdown('<div class="row-fixed">', unsafe_allow_html=True)
-        # Más métricas
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.metric("👤 GASTO JACKSON", f"S/.{gasto_personal_jackson:,.2f}")
-            st.metric("👤 GASTO YULY", f"S/.{gasto_personal_yuly:,.2f}")
-        with col_b:
-            st.metric("🛒 GASTOS VARIABLES", f"S/.{gastos_variables:,.2f}")
-            st.metric("🏠 GASTOS FIJOS", f"S/.{gastos_fijos:,.2f}")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # COLUMNA 4 (derecha - 25%) - VACÍA
-    with col_right:
-        st.markdown('<div class="empty-col"></div>', unsafe_allow_html=True)
+    # FILA 2
+    st.markdown("### 🟡 FILA 2")
+    # Aquí irán las métricas después
     
     st.markdown('</div>', unsafe_allow_html=True)
+
+# COLUMNA DERECHA (25%) - VACÍA
+with col_right:
+    st.markdown('<div class="empty-col">➡️ ESPACIO<br>DECORATIVO</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ========== MOSTRAR VALORES EXTRAÍDOS ==========
