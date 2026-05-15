@@ -202,7 +202,6 @@ with st.container():
 
 
 # ========== MOSTRAR VALORES EXTRAÍDOS ==========
-st.markdown("---")
 st.subheader("💰 valores extraídos de google sheets")
 
 # Primera fila de métricas
