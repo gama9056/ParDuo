@@ -68,7 +68,7 @@ if not df_dash.empty:
         gastado_jackson = float(df_dash.iloc[7, 1]) if num_filas > 7 else 0
         gastado_yuly = float(df_dash.iloc[8, 1]) if num_filas > 8 else 0
         gastado_fijos = float(df_dash.iloc[10, 1]) if num_filas > 10 else 0
-        dinero_acumulado = float(df_dash.iloc[14, 3]) if num_filas > 14 else 11000
+        dinero_acumulado = float(df_dash.iloc[14, 2]) if num_filas > 14 else 11000
         dinero_invertido = float(df_dash.iloc[15, 1]) if num_filas > 15 else 80000
         presupuesto_jackson_total = float(df_dash.iloc[16, 1]) if num_filas > 16 else 300
         presupuesto_yuly_total = float(df_dash.iloc[17, 1]) if num_filas > 17 else 300
