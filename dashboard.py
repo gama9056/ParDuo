@@ -69,30 +69,30 @@ if not df_dash.empty:
     # Verificar que haya suficientes filas
     if num_filas > 28:  # Necesitas al menos 29 filas (0 a 28)
         
-        # FILAS 5 a 12 (índices 4 a 11)
-        ingreso_total = limpiar_valor(df_dash.iloc[4, 1] if num_cols > 1 else 0)      # Fila 5
-        gastado_jackson = limpiar_valor(df_dash.iloc[7, 1] if num_cols > 1 else 0)     # Fila 8
-        gastado_yuly = limpiar_valor(df_dash.iloc[8, 1] if num_cols > 1 else 0)        # Fila 9
-        gastado_variables = limpiar_valor(df_dash.iloc[9, 1] if num_cols > 1 else 0)   # Fila 10
-        gastado_fijos = limpiar_valor(df_dash.iloc[10, 1] if num_cols > 1 else 0)      # Fila 11
-        gastos_total = limpiar_valor(df_dash.iloc[11, 1] if num_cols > 1 else 0)       # Fila 12
+        # FILAS 5 a 12 (índices 4 a 11) - Columna C (índice 2)
+        ingreso_total = limpiar_valor(df_dash.iloc[4, 2] if num_cols > 2 else 0)       # Fila 5
+        gastado_jackson = limpiar_valor(df_dash.iloc[7, 2] if num_cols > 2 else 0)     # Fila 8
+        gastado_yuly = limpiar_valor(df_dash.iloc[8, 2] if num_cols > 2 else 0)        # Fila 9
+        gastado_variables = limpiar_valor(df_dash.iloc[9, 2] if num_cols > 2 else 0)   # Fila 10
+        gastado_fijos = limpiar_valor(df_dash.iloc[10, 2] if num_cols > 2 else 0)      # Fila 11
+        gastos_total = limpiar_valor(df_dash.iloc[11, 2] if num_cols > 2 else 0)       # Fila 12
         
-        # FILAS 15 a 20 (índices 14 a 19)
-        dinero_acumulado = limpiar_valor(df_dash.iloc[14, 1] if num_cols > 1 else 0)   # Fila 15
-        dinero_invertido = limpiar_valor(df_dash.iloc[15, 1] if num_cols > 1 else 0)   # Fila 16
-        presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 1] if num_cols > 1 else 0)  # Fila 17
-        presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 1] if num_cols > 1 else 0)     # Fila 18
-        gastos_variables_base = limpiar_valor(df_dash.iloc[18, 1] if num_cols > 1 else 0)      # Fila 19
-        gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 1] if num_cols > 1 else 0)          # Fila 20
+        # FILAS 15 a 20 (índices 14 a 19) - Columna C (índice 2)
+        dinero_acumulado = limpiar_valor(df_dash.iloc[14, 2] if num_cols > 2 else 0)   # Fila 15
+        dinero_invertido = limpiar_valor(df_dash.iloc[15, 2] if num_cols > 2 else 0)   # Fila 16
+        presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 2] if num_cols > 2 else 0)  # Fila 17
+        presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 2] if num_cols > 2 else 0)     # Fila 18
+        gastos_variables_base = limpiar_valor(df_dash.iloc[18, 2] if num_cols > 2 else 0)      # Fila 19
+        gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 2] if num_cols > 2 else 0)          # Fila 20
         
-        # FILAS 24 a 27 (índices 23 a 26)
-        saldo_jackson = limpiar_valor(df_dash.iloc[23, 1] if num_cols > 1 else 0)       # Fila 24
-        saldo_yuly = limpiar_valor(df_dash.iloc[24, 1] if num_cols > 1 else 0)          # Fila 25
-        saldo_variables = limpiar_valor(df_dash.iloc[25, 1] if num_cols > 1 else 0)     # Fila 26
-        saldo_fijos = limpiar_valor(df_dash.iloc[26, 1] if num_cols > 1 else 0)         # Fila 27
+        # FILAS 24 a 27 (índices 23 a 26) - Columna C (índice 2)
+        saldo_jackson = limpiar_valor(df_dash.iloc[23, 2] if num_cols > 2 else 0)       # Fila 24
+        saldo_yuly = limpiar_valor(df_dash.iloc[24, 2] if num_cols > 2 else 0)          # Fila 25
+        saldo_variables = limpiar_valor(df_dash.iloc[25, 2] if num_cols > 2 else 0)     # Fila 26
+        saldo_fijos = limpiar_valor(df_dash.iloc[26, 2] if num_cols > 2 else 0)         # Fila 27
         
-        # FILA 29 (índice 28)
-        total_disponible = limpiar_valor(df_dash.iloc[28, 1] if num_cols > 1 else 0)    # Fila 29
+        # FILA 29 (índice 28) - Columna C (índice 2)
+        total_disponible = limpiar_valor(df_dash.iloc[28, 2] if num_cols > 2 else 0)    # Fila 29
         
     else:
         # Valores por defecto si no hay suficientes filas
