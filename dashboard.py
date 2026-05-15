@@ -6,8 +6,8 @@ from datetime import datetime
 # ========== CONFIGURACIÓN ==========
 SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 
-URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
-URL_DASH = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=3_Dashboard_Data"
+URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tqx=out:csv&sheet=1_Formulario_RAW"
+URL_DASH = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tqx=out:csv&sheet=3_Dashboard_Data"
 
 st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
 
@@ -43,15 +43,11 @@ if df_raw.empty:
 if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
-# ========== EXTRAER VALORES DE 3_Dashboard_Data POR POSICIÓN ==========
-# Según tu archivo Excel, estas son las posiciones exactas (fila, columna)
-# Nota: pandas usa índice 0, por lo que la fila 1 es índice 0
-
+# ========== EXTRAER VALORES DE 3_Dashboard_Data ==========
 if not df_dash.empty:
-    # Asegurar que tenemos al menos 21 filas
     num_filas = len(df_dash)
     
-    # Extraer por nombre de la primera columna (más confiable que posición)
+    # Extraer por nombre de la primera columna
     datos_dict = {}
     for idx, row in df_dash.iterrows():
         nombre = str(row.iloc[0]) if pd.notna(row.iloc[0]) else ""
@@ -59,28 +55,18 @@ if not df_dash.empty:
         if nombre and nombre != "nan":
             datos_dict[nombre] = valor
     
-    # También extraer por posición (fallback)
+    # Extraer por posición
     try:
-        # C8 (fila 8) - Gasto personal Jackson gastado
         gastado_jackson = float(df_dash.iloc[7, 1]) if num_filas > 7 else 0
-        # C9 (fila 9) - Gasto personal Yuly gastado  
         gastado_yuly = float(df_dash.iloc[8, 1]) if num_filas > 8 else 0
-        # C11 (fila 11) - Gastos Fijos Yuly gastado
         gastado_fijos = float(df_dash.iloc[10, 1]) if num_filas > 10 else 0
-        # C15 (fila 15) - Dinero Acumulado
         dinero_acumulado = float(df_dash.iloc[14, 1]) if num_filas > 14 else 11000
-        # C16 (fila 16) - Dinero invertido
         dinero_invertido = float(df_dash.iloc[15, 1]) if num_filas > 15 else 80000
-        # C17 (fila 17) - Presupuesto Jackson
         presupuesto_jackson_total = float(df_dash.iloc[16, 1]) if num_filas > 16 else 300
-        # C18 (fila 18) - Presupuesto Yuly
         presupuesto_yuly_total = float(df_dash.iloc[17, 1]) if num_filas > 17 else 300
-        # C19 (fila 19) - Gastos Variables – Jackson (presupuesto/base)
         gastos_variables_base = float(df_dash.iloc[18, 1]) if num_filas > 18 else 0
-        # C20 (fila 20) - Gastos Fijos – Yuly (presupuesto/base)
         gastos_fijos_base = float(df_dash.iloc[19, 1]) if num_filas > 19 else 2000
     except Exception as e:
-        st.error(f"Error extrayendo valores por posición: {e}")
         gastado_jackson = 152.50
         gastado_yuly = 39.00
         gastado_fijos = 0
@@ -91,7 +77,6 @@ if not df_dash.empty:
         gastos_variables_base = 0
         gastos_fijos_base = 2000
     
-    # También extraer por diccionario (más robusto)
     gastado_variables = float(datos_dict.get('📂 Gastos Variables Jackson', 0))
     if gastado_variables == 0:
         gastado_variables = float(datos_dict.get('Gastos Variables – Jackson', 0))
@@ -100,7 +85,6 @@ if not df_dash.empty:
     if gastado_fijos_dict > 0:
         gastado_fijos = gastado_fijos_dict
 else:
-    # Valores por defecto si no hay datos
     gastado_jackson = 152.50
     gastado_yuly = 39.00
     gastado_fijos = 0
@@ -122,17 +106,6 @@ porcentaje_jackson = min(100, (gastado_jackson / presupuesto_jackson_total) * 10
 porcentaje_yuly = min(100, (gastado_yuly / presupuesto_yuly_total) * 100) if presupuesto_yuly_total > 0 else 0
 porcentaje_variables = min(100, (gastado_variables / gastos_variables_base) * 100) if gastos_variables_base > 0 else 0
 porcentaje_fijos = min(100, (gastado_fijos / gastos_fijos_base) * 100) if gastos_fijos_base > 0 else 0
-
-# ========== MOSTRAR EN SIDEBAR LOS VALORES EXTRAÍDOS (debug) ==========
-# with st.sidebar:
-#     st.markdown("### 🔍 Debug - Valores extraídos")
-#     st.metric("Gastado Jackson", f"S/.{gastado_jackson}")
-#     st.metric("Gastado Yuly", f"S/.{gastado_yuly}")
-#     st.metric("Gastado Variables", f"S/.{gastado_variables}")
-#     st.metric("Gastado Fijos", f"S/.{gastado_fijos}")
-#     st.metric("Base Variables", f"S/.{gastos_variables_base}")
-#     st.metric("Base Fijos", f"S/.{gastos_fijos_base}")
-#     st.markdown("---")
 
 # ========== KPI CARDS ==========
 st.markdown("### 📊 Resumen General")
