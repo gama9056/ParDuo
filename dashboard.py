@@ -51,47 +51,34 @@ if df_raw.empty:
 if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
-# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data ==========
+# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data POR POSICIÓN==========
 if not df_dash.empty:
-    num_filas = len(df_dash)
-    
-    # Extraer por nombre (buscando en columna B, valor en columna C)
-    datos_dict = {}
-    for idx, row in df_dash.iterrows():
-        # Tu texto está en columna 1 (B), el valor en columna 2 (C)
-        # Recuerda: Pandas cuenta las columnas desde 0
-        nombre = str(row.iloc[1]) if pd.notna(row.iloc[1]) else ""  # ← Cambiado a columna 1
-        valor_str = str(row.iloc[2]) if len(row) > 2 and pd.notna(row.iloc[2]) else "0"  # ← Cambiado a columna 2
-        
-        # Limpiar el valor: quitar "S/." y comas, convertir a número
+    # Limpiar valor: quita "S/." y comas, convierte a número
+    def limpiar_valor(valor_str):
         try:
-            valor_limpio = valor_str.replace("S/.", "").replace(",", "").strip()
-            valor = float(valor_limpio) if valor_limpio else 0
+            return float(str(valor_str).replace("S/.", "").replace(",", "").strip())
         except:
-            valor = 0
-            
-        if nombre and nombre != "nan" and nombre != "":
-            datos_dict[nombre] = valor
+            return 0
     
-    # Extraer valores específicos por nombre (más confiable que por posición)
-    gastado_jackson = datos_dict.get('📂 Gasto personal Jackson', 0)
-    gastado_yuly = datos_dict.get('📂 Gasto personal Yuly', 0)
-    gastado_variables = datos_dict.get('📂 Gastos Variables Jackson', 0)
-    gastado_fijos = datos_dict.get('📂 Gastos Fijos Yuly', 0)
+    # Extraer por posición (fila, columna) - columna C es índice 2
+    gastado_jackson = limpiar_valor(df_dash.iloc[7, 2])   # Fila 8, Columna C
+    gastado_yuly = limpiar_valor(df_dash.iloc[8, 2])      # Fila 9, Columna C
+    gastado_variables = limpiar_valor(df_dash.iloc[9, 2]) # Fila 10, Columna C
+    gastado_fijos = limpiar_valor(df_dash.iloc[10, 2])    # Fila 11, Columna C
     
-    dinero_acumulado = datos_dict.get('Dinero Acumulado', 11000)
-    dinero_invertido = datos_dict.get('Dinero invertido', 80000)
-    presupuesto_jackson_total = datos_dict.get('Presupuesto personal – Jackson', 300)
-    presupuesto_yuly_total = datos_dict.get('Presupuesto personal – Yuly', 300)
-    gastos_variables_base = datos_dict.get('Gastos Variables – Jackson', 0)
-    gastos_fijos_base = datos_dict.get('Gastos Fijos – Yuly', 2000)
+    dinero_acumulado = limpiar_valor(df_dash.iloc[14, 2]) # Fila 15, Columna C
+    dinero_invertido = limpiar_valor(df_dash.iloc[15, 2]) # Fila 16, Columna C
+    presupuesto_jackson_total = limpiar_valor(df_dash.iloc[16, 2]) # Fila 17, Columna C
+    presupuesto_yuly_total = limpiar_valor(df_dash.iloc[17, 2])    # Fila 18, Columna C
+    gastos_variables_base = limpiar_valor(df_dash.iloc[18, 2])      # Fila 19, Columna C
+    gastos_fijos_base = limpiar_valor(df_dash.iloc[19, 2])          # Fila 20, Columna C
     
-    # También extraer los valores de "Saldo restante" si los necesitas
-    saldo_jackson = datos_dict.get('📂 Gasto personal Jackson', 0)  # Fila 24
-    saldo_yuly = datos_dict.get('📂 Gasto personal Yuly', 0)        # Fila 25
-    saldo_variables = datos_dict.get('📂 Gastos Variables Jackson', 0)  # Fila 26
-    saldo_fijos = datos_dict.get('📂 Gastos Fijos Yuly', 0)         # Fila 27
-    total_disponible = datos_dict.get('Total Disponible', 0)        # Fila 29
+    # También los saldos restantes (ya calculados en Sheets)
+    saldo_jackson = limpiar_valor(df_dash.iloc[23, 2])   # Fila 24, Columna C
+    saldo_yuly = limpiar_valor(df_dash.iloc[24, 2])      # Fila 25, Columna C
+    saldo_variables = limpiar_valor(df_dash.iloc[25, 2]) # Fila 26, Columna C
+    saldo_fijos = limpiar_valor(df_dash.iloc[26, 2])     # Fila 27, Columna C
+    total_disponible = limpiar_valor(df_dash.iloc[28, 2]) # Fila 29, Columna C
 
 else:
     # Valores por defecto
@@ -99,12 +86,12 @@ else:
     gastado_yuly = 39.00
     gastado_variables = 69.00
     gastado_fijos = 51.00
-    dinero_acumulado = 12000
-    dinero_invertido = 80000
-    presupuesto_jackson_total = 300
-    presupuesto_yuly_total = 300
+    dinero_acumulado = 12000.00
+    dinero_invertido = 80000.00
+    presupuesto_jackson_total = 300.00
+    presupuesto_yuly_total = 300.00
     gastos_variables_base = 69.00
-    gastos_fijos_base = 2000
+    gastos_fijos_base = 2000.00
 
 # ========== CÁLCULOS ==========
 restante_jackson = presupuesto_jackson_total - gastado_jackson
