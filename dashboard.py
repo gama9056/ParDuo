@@ -4,6 +4,10 @@ import plotly.express as px
 from datetime import datetime
 
 # ========== CONFIGURACIÓN ==========
+import pandas as pd
+import streamlit as st
+
+# ========== CONFIGURACIÓN ==========
 SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 
 URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
@@ -11,23 +15,27 @@ URL_DASH = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:c
 
 st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
 
-@st.cache_data(ttl=60)
-def cargar_formulario():
+# Función base centralizada con caché
+@st.cache_data(ttl=60, show_spinner="Descargando datos desde Google Sheets...")
+def _importar_hoja(url: str) -> pd.DataFrame:
     try:
-        df = pd.read_csv(URL_RAW)
-        return df
+        # Lee el CSV directamente desde el endpoint de Google
+        df = pd.read_csv(url)
+        # Elimina filas y columnas que estén completamente vacías
+        df = df.dropna(how='all').dropna(axis=1, how='all')
+        # Retorna una copia para evitar advertencias de mutación en la caché
+        return df.copy()
     except Exception as e:
-        st.error(f"Error cargando formulario: {e}")
+        st.error(f"Error de conexión con Google Sheets: {e}")
         return pd.DataFrame()
 
-@st.cache_data(ttl=60)
-def cargar_dashboard():
-    try:
-        df = pd.read_csv(URL_DASH)
-        return df
-    except Exception as e:
-        st.error(f"Error cargando dashboard: {e}")
-        return pd.DataFrame()
+# Funciones semánticas para tu aplicación
+def cargar_formulario() -> pd.DataFrame:
+    return _importar_hoja(URL_RAW)
+
+def cargar_dashboard() -> pd.DataFrame:
+    return _importar_hoja(URL_DASH)
+
 
 # ========== TÍTULO ==========
 st.markdown("""
