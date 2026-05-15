@@ -124,15 +124,15 @@ porcentaje_variables = min(100, (gastado_variables / gastos_variables_base) * 10
 porcentaje_fijos = min(100, (gastado_fijos / gastos_fijos_base) * 100) if gastos_fijos_base > 0 else 0
 
 # ========== MOSTRAR EN SIDEBAR LOS VALORES EXTRAÍDOS (debug) ==========
-with st.sidebar:
-    st.markdown("### 🔍 Debug - Valores extraídos")
-    st.metric("Gastado Jackson", f"S/.{gastado_jackson}")
-    st.metric("Gastado Yuly", f"S/.{gastado_yuly}")
-    st.metric("Gastado Variables", f"S/.{gastado_variables}")
-    st.metric("Gastado Fijos", f"S/.{gastado_fijos}")
-    st.metric("Base Variables", f"S/.{gastos_variables_base}")
-    st.metric("Base Fijos", f"S/.{gastos_fijos_base}")
-    st.markdown("---")
+# with st.sidebar:
+#     st.markdown("### 🔍 Debug - Valores extraídos")
+#     st.metric("Gastado Jackson", f"S/.{gastado_jackson}")
+#     st.metric("Gastado Yuly", f"S/.{gastado_yuly}")
+#     st.metric("Gastado Variables", f"S/.{gastado_variables}")
+#     st.metric("Gastado Fijos", f"S/.{gastado_fijos}")
+#     st.metric("Base Variables", f"S/.{gastos_variables_base}")
+#     st.metric("Base Fijos", f"S/.{gastos_fijos_base}")
+#     st.markdown("---")
 
 # ========== KPI CARDS ==========
 st.markdown("### 📊 Resumen General")
