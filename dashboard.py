@@ -6,15 +6,15 @@ from datetime import datetime
 # ========== CONFIGURACIÓN PARA JALAR DATOS DE GOOGLE SHEETS → ID + HOJAS DE INTERES==========
 SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 
-URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
-URL_DASH = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=3_Dashboard_Data"
+URL_HOJA_1 = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
+URL_HOJA_3 = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=3_Dashboard_Data"
 
 st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
 
 @st.cache_data(ttl=60)
 def cargar_formulario():
     try:
-        df = pd.read_csv(URL_RAW)
+        df = pd.read_csv(URL_HOJA_1)
         return df
     except Exception as e:
         st.error(f"Error cargando formulario: {e}")
@@ -23,13 +23,13 @@ def cargar_formulario():
 @st.cache_data(ttl=60)
 def cargar_dashboard():
     try:
-        df = pd.read_csv(URL_DASH)
+        df = pd.read_csv(URL_HOLA_3)
         return df
     except Exception as e:
         st.error(f"Error cargando dashboard: {e}")
         return pd.DataFrame()
 
-# ========== TÍTULO DEL DASHBOARD ==========
+# ========== TÍTULO DE LA PAGINA DEL DASHBOARD ==========
 st.markdown("""
     <h1 style="color: black; 
                margin-top: -65px; 
