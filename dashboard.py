@@ -52,7 +52,6 @@ if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
 # ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data POR POSICIÓN==========
-# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data POR POSICIÓN==========
 if not df_dash.empty:
     # Función para limpiar valores
     def limpiar_valor(valor):
@@ -98,24 +97,28 @@ if not df_dash.empty:
         ahorro_mutuo = limpiar_valor(df_dash.iloc[28, 2] if num_cols > 2 else 0)               # Fila 29
         
     else:
-        # Valores por defecto si no hay suficientes filas
+        # Valores por defecto si no hay suficientes filas (menos de 29 filas)
         ingreso_total = gasto_personal_jackson = gasto_personal_yuly = gastos_variables = gastos_fijos = 0
         gasto_total = 0
-        dinero_mutuo = 11000
-        dinero_invertido = 5000
-        presupuesto_mensual_jackson = presupuesto_mensual_yuly = 300
-        presupuesto_gastos_variables = presupuesto_gastos_fijos = 0
+        dinero_mutuo = 0
+        dinero_invertido = 0
+        presupuesto_mensual_jackson = 0
+        presupuesto_mensual_yuly = 0
+        presupuesto_gastos_variables = 0
+        presupuesto_gastos_fijos = 0
         saldo_mensual_jackson = saldo_mensual_yuly = saldo_variables = saldo_fijos = 0
         ahorro_mutuo = 0
 
 else:
-    # Valores por defecto si no hay datos
+    # Valores por defecto si no hay datos (df_dash vacío)
     ingreso_total = gasto_personal_jackson = gasto_personal_yuly = gastos_variables = gastos_fijos = 0
     gasto_total = 0
-    dinero_mutuo = 11000
-    dinero_invertido = 5000
-    presupuesto_mensual_jackson = presupuesto_mensual_yuly = 300
-    presupuesto_gastos_variables = presupuesto_gastos_fijos = 0
+    dinero_mutuo = 0
+    dinero_invertido = 0
+    presupuesto_mensual_jackson = 0
+    presupuesto_mensual_yuly = 0
+    presupuesto_gastos_variables = 0
+    presupuesto_gastos_fijos = 0
     saldo_mensual_jackson = saldo_mensual_yuly = saldo_variables = saldo_fijos = 0
     ahorro_mutuo = 0
 
