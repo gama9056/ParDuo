@@ -29,7 +29,7 @@ def cargar_dashboard():
         st.error(f"Error cargando dashboard: {e}")
         return pd.DataFrame()
 
-# ========== TÍTULO ==========
+# ========== TÍTULO DEL DASHBOARD ==========
 st.markdown("""
     <h1 style="color: black; 
                margin-top: -65px; 
