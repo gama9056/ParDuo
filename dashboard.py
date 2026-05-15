@@ -51,7 +51,7 @@ if df_raw.empty:
 if df_dash.empty:
     st.warning("⚠️ Cargando datos del dashboard...")
 
-# ========== EXTRAER VALORES DE 3_Dashboard_Data ==========
+# ========== EXTRAER VALORES DE LA HOJA 3_Dashboard_Data ==========
 if not df_dash.empty:
     num_filas = len(df_dash)
     
@@ -275,3 +275,4 @@ else:
 
 st.markdown("---")
 st.caption("🔄 Datos actualizados cada 60 segundos | 📱 Registra gastos en el formulario ParDuo")
+
