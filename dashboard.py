@@ -59,6 +59,7 @@ if not df_dash.empty:
     datos_dict = {}
     for idx, row in df_dash.iterrows():
         # Tu texto está en columna 1 (B), el valor en columna 2 (C)
+        # Recuerda: Pandas cuenta las columnas desde 0
         nombre = str(row.iloc[1]) if pd.notna(row.iloc[1]) else ""  # ← Cambiado a columna 1
         valor_str = str(row.iloc[2]) if len(row) > 2 and pd.notna(row.iloc[2]) else "0"  # ← Cambiado a columna 2
         
