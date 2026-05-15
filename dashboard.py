@@ -12,21 +12,21 @@ URL_HOJA_3 = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out
 st.set_page_config(page_title="ParDuo", page_icon="😎", layout="wide")
 
 @st.cache_data(ttl=60)
-def cargar_formulario():
+def formulario_raw():
     try:
         df = pd.read_csv(URL_HOJA_1)
         return df
     except Exception as e:
-        st.error(f"Error cargando formulario: {e}")
+        st.error(f"Error cargando formulario_raw: {e}")
         return pd.DataFrame()
 
 @st.cache_data(ttl=60)
-def cargar_dashboard():
+def dashboard_data():
     try:
         df = pd.read_csv(URL_HOJA_3)
         return df
     except Exception as e:
-        st.error(f"Error cargando dashboard: {e}")
+        st.error(f"Error cargando dashboard_data: {e}")
         return pd.DataFrame()
 
 # ========== TÍTULO DE LA PAGINA DEL DASHBOARD ==========
@@ -42,9 +42,9 @@ st.markdown("""
     </h1>
 """, unsafe_allow_html=True)
 
-# ========== CARGAR DATOS ==========
-df_raw = cargar_formulario()
-df_dash = cargar_dashboard()
+# ========== CARGAR DATOS DE LA HOJA 1 & 3 DE GOOGLE SHEETS==========
+df_raw = formulario_raw()
+df_dash = dashboard_data()
 
 if df_raw.empty:
     st.warning("⚠️ Cargando datos del formulario...")
