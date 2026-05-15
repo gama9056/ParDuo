@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime
 
-# ========== CONFIGURACIÓN ==========
+# ========== CONFIGURACIÓN PARA JALAR DATOS DE GOOGLE SHEETS → ID + HOJAS DE INTERES==========
 SHEET_ID = "1HRQo2fQyfJjB9RxIai9-1YfJQEFEXGW--Z2CrOdUPT0"
 
 URL_RAW = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet=1_Formulario_RAW"
@@ -31,7 +31,7 @@ def cargar_dashboard():
 
 # ========== TÍTULO ==========
 st.markdown("""
-    <h1 style="color: black; margin-top: -55px; text-align: center;">😎 ParDuo</h1>
+    <h1 style="color: black; margin-top: -60px; text-align: center;">😎 ParDuo</h1>
 """, unsafe_allow_html=True)
 
 # ========== CARGAR DATOS ==========
